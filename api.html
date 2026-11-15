@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API · Classic OTP</title>
+    <script type="module" crossorigin="" src="/assets/app-BrEmC4nq.js"></script>
+    <link rel="stylesheet" crossorigin="" href="/assets/app-Baw3OL6g.css">
+  </head>
+  <body>
+    <div id="root" data-server-rendered="true"><div class="_layout_zagpv_1"><header class="_header_ypmj7_1"><div class="_container_1u4j4_1 _lg_1u4j4_17 "><div class="_headerContent_ypmj7_6"><a href="/" class="_logo_ypmj7_14">Classic OTP</a><nav class="_nav_89ltb_1" aria-label="Main navigation"><ul class="_list_89ltb_5 _horizontal_89ltb_13"><li class="_item_89ltb_22"><a href="/" class="_link_89ltb_26">Home</a></li><li class="_item_89ltb_22"><a href="/api" class="_link_89ltb_26" aria-current="page">API</a></li><li class="_item_89ltb_22"><a href="/pricing" class="_link_89ltb_26">Pricing</a></li><li class="_item_89ltb_22"><a href="/demo" class="_link_89ltb_26">Demo</a></li></ul></nav><button type="button" class="_toggle_34kho_1" aria-label="Switch to dark theme" title="Switch to dark theme"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></div></div></header><main class="_main_zagpv_7"><main class="_main_1nbqb_1"><div class="_container_1u4j4_1 _lg_1u4j4_17 "><h1>API Documentation</h1><p>Classic OTP provides three endpoints for generating, queuing, and validating one-time passwords. Emails are queued and scheduled rather than sent on the spot, so queuing one tells you when it will leave.</p><div class="_endpoints_1nbqb_5"><div class="_endpoint_tgw5x_1"><div class="_header_tgw5x_8"><span class="_badge_1yh3g_1 _primary_1yh3g_24 _sm_1yh3g_9 ">POST</span><code class="_path_tgw5x_15">/otp/reservation</code></div><p class="_description_tgw5x_23">Reserve the next delivery slot before sending an OTP email. The response returns reservationToken, which confirms the slot in /otp, along with scheduledAt and waitSeconds: the instant the email will leave and how long that is from now. Only the latest reservation is valid, so a newer reservation makes earlier tokens unusable and guarantees the promised wait. A token expires after 60 seconds (expiresAt). No request body required.</p><div class="_section_tgw5x_28"><h4>Response</h4><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">json</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _json_1sma9_90">{
+  "reservationToken": "reservation-token",
+  "scheduledAt": "2026-10-04T14:32:05.000Z",
+  "waitSeconds": 3,
+  "expiresAt": "2026-10-04T14:33:02.000Z"
+}</code></pre></div></div><div class="_section_tgw5x_28"><h4>Examples</h4><div class="_tabs_qhofd_1 "><div class="_tabList_qhofd_6" role="tablist"><button type="button" role="tab" aria-selected="true" aria-controls="panel-curl" id="tab-curl" class="_tab_qhofd_1 _active_qhofd_34">curl</button><button type="button" role="tab" aria-selected="false" aria-controls="panel-javascript" id="tab-javascript" class="_tab_qhofd_1 ">javascript</button></div><div id="panel-curl" role="tabpanel" aria-labelledby="tab-curl" class="_panel_qhofd_39 _panelActive_qhofd_44"><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">curl</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 undefined">curl -X POST https://api.classic-otp.fr/otp/reservation \
+  -H "Content-Type: application/json" \
+  -d '{}'</code></pre></div></div><div id="panel-javascript" role="tabpanel" aria-labelledby="tab-javascript" class="_panel_qhofd_39 "><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">javascript</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _javascript_1sma9_74">fetch('https://api.classic-otp.fr/otp/reservation', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: '{}'
+})</code></pre></div></div></div></div></div><div class="_endpoint_tgw5x_1"><div class="_header_tgw5x_8"><span class="_badge_1yh3g_1 _primary_1yh3g_24 _sm_1yh3g_9 ">POST</span><code class="_path_tgw5x_15">/otp</code></div><p class="_description_tgw5x_23">Queue an OTP email into the slot held by a reservation. The reservation token is consumed: it can be used once, and only while it is current and not expired. The response returns scheduledAt, the instant the email will leave, and waitSeconds, how long that is from now. A reservation that was superseded, already used, or expired returns 409.</p><div class="_section_tgw5x_28"><h4>Request Body</h4><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">json</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _json_1sma9_90">{
+  "email": "user@example.com",
+  "reservationToken": "reservation-token"
+}</code></pre></div></div><div class="_section_tgw5x_28"><h4>Response</h4><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">json</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _json_1sma9_90">{
+  "otpId": "generated-otp-id",
+  "scheduledAt": "2026-10-04T14:32:05.000Z",
+  "waitSeconds": 3
+}</code></pre></div></div><div class="_section_tgw5x_28"><h4>Examples</h4><div class="_tabs_qhofd_1 "><div class="_tabList_qhofd_6" role="tablist"><button type="button" role="tab" aria-selected="true" aria-controls="panel-curl" id="tab-curl" class="_tab_qhofd_1 _active_qhofd_34">curl</button><button type="button" role="tab" aria-selected="false" aria-controls="panel-javascript" id="tab-javascript" class="_tab_qhofd_1 ">javascript</button></div><div id="panel-curl" role="tabpanel" aria-labelledby="tab-curl" class="_panel_qhofd_39 _panelActive_qhofd_44"><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">curl</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 undefined">curl -X POST https://api.classic-otp.fr/otp \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","reservationToken":"reservation-token"}'</code></pre></div></div><div id="panel-javascript" role="tabpanel" aria-labelledby="tab-javascript" class="_panel_qhofd_39 "><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">javascript</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _javascript_1sma9_74">fetch('https://api.classic-otp.fr/otp', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: 'user@example.com', reservationToken: 'reservation-token' })
+})</code></pre></div></div></div></div></div><div class="_endpoint_tgw5x_1"><div class="_header_tgw5x_8"><span class="_badge_1yh3g_1 _primary_1yh3g_24 _sm_1yh3g_9 ">POST</span><code class="_path_tgw5x_15">/otp/:id/challenge</code></div><p class="_description_tgw5x_23">Validate an OTP code for a given OTP ID.</p><div class="_section_tgw5x_28"><h4>Request Body</h4><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">json</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _json_1sma9_90">{
+  "code": "123456"
+}</code></pre></div></div><div class="_section_tgw5x_28"><h4>Response</h4><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">json</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _json_1sma9_90">{
+  "valid": true
+}</code></pre></div></div><div class="_section_tgw5x_28"><h4>Examples</h4><div class="_tabs_qhofd_1 "><div class="_tabList_qhofd_6" role="tablist"><button type="button" role="tab" aria-selected="true" aria-controls="panel-curl" id="tab-curl" class="_tab_qhofd_1 _active_qhofd_34">curl</button><button type="button" role="tab" aria-selected="false" aria-controls="panel-javascript" id="tab-javascript" class="_tab_qhofd_1 ">javascript</button></div><div id="panel-curl" role="tabpanel" aria-labelledby="tab-curl" class="_panel_qhofd_39 _panelActive_qhofd_44"><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">curl</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 undefined">curl -X POST https://api.classic-otp.fr/otp/otp-id-here/challenge \
+  -H "Content-Type: application/json" \
+  -d '{"code":"123456"}'</code></pre></div></div><div id="panel-javascript" role="tabpanel" aria-labelledby="tab-javascript" class="_panel_qhofd_39 "><div class="_container_1sma9_1"><div class="_header_1sma9_11"><span class="_language_1sma9_21">javascript</span></div><pre class="_pre_1sma9_54"><code class="_code_1sma9_61 _javascript_1sma9_74">fetch('https://api.classic-otp.fr/otp/otp-id/challenge', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ code: '123456' })
+})</code></pre></div></div></div></div></div></div></div></main></main><footer class="_footer_1fvh1_1"><div class="_container_1u4j4_1 _lg_1u4j4_17 "><div class="_content_1fvh1_7"><div class="_section_1fvh1_13"><h3>Classic OTP</h3><p>One-time password service.</p></div><div class="_section_1fvh1_13"><h4>Info</h4><ul><li><a href="/about">About</a></li></ul></div></div></div></footer></div></div>
+<script>window.__VITE_REACT_SSG_HASH__ = 'dq1np4nvdj'</script>
+  
+
+</body></html>

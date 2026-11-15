@@ -1,0 +1,23 @@
+{
+  "_client-DNH3M9hU.js": {
+    "file": "assets/client-DNH3M9hU.js",
+    "name": "client",
+    "isDynamicEntry": true,
+    "imports": [
+      "pages/home/index.html"
+    ]
+  },
+  "pages/home/index.html": {
+    "file": "assets/app-C3vMr3ON.js",
+    "name": "app",
+    "src": "pages/home/index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "_client-DNH3M9hU.js",
+      "_client-DNH3M9hU.js"
+    ],
+    "css": [
+      "assets/app-Bf19GxYR.css"
+    ]
+  }
+}
